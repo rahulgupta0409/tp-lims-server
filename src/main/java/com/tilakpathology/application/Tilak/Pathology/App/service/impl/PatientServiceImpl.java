@@ -34,7 +34,16 @@ public class PatientServiceImpl implements PatientService {
                 .age(patientDto.getAge())
                 .phoneNumber(patientDto.getPhoneNumber())
                 .emailId(patientDto.getEmailId())
+                .labTests(patientDto.getLabTests())
+                .referredDoctorId(patientDto.getReferredDoctorId())
+                .org(patientDto.getOrg())
+                .isUpi(patientDto.getIsUpi())
+                .discount(patientDto.getDiscount())
+                .dueAmount(patientDto.getDueAmount())
+                .totalAmount(patientDto.getTotalAmount())
+                .paidAmount(patientDto.getPaidAmount())
                 .createdDate(LocalDateTime.now().toString())
+                .createdBy(patientDto.getCreatedBy())
                 .build();
         patientRepository.save(patient);
         log.info("Patient Successfully Created With PatientId {}", patient.getPatientId());

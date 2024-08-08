@@ -1,10 +1,13 @@
 package com.tilakpathology.application.Tilak.Pathology.App.dto.response;
 
 
+import com.tilakpathology.application.Tilak.Pathology.App.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +23,7 @@ public class UserResponseDto {
 
     private String fullName;
 
-    private String password;
+    private List<Role> roles;
 
     private String timestamp;
 }

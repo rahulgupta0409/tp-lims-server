@@ -55,16 +55,36 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
 
     @Override
     public Optional<MinorLabTestResponseDto> getAllMinorLabTestByTestId(String testId) {
-        Optional<MinorLabTest> minorLabTest = minorLabTestRepository.getTestByTestId(testId);
-        if (minorLabTest.isPresent()){
+        MinorLabTest minorLabTest = minorLabTestRepository.getTestByTestId(testId);
+        if (minorLabTest != null){
             return Optional.ofNullable(MinorLabTestResponseDto.builder()
-                    .testId(minorLabTest.get().getTestId())
-                    .testName(minorLabTest.get().getTestName())
-                    .testPrice(minorLabTest.get().getTestPrice())
-                    .remarks(minorLabTest.get().getRemarks())
+                    .testId(minorLabTest.getTestId())
+                    .testName(minorLabTest.getTestName())
+                    .testPrice(minorLabTest.getTestPrice())
+                    .remarks(minorLabTest.getRemarks())
                     .build());
         }
         log.info("Test Not Found for TestId: {}", testId);
         throw new ResourceNotFoundException("Test Not Found");
+    }
+
+    @Override
+    public MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId) {
+        MinorLabTest minorLabTest = minorLabTestRepository.getTestByTestId(minorLabTestId);
+        if(minorLabTest != null){
+            minorLabTest.setTestId(minorLabTestId);
+            minorLabTest.setId(minorLabTest.getId());
+            if(minorLabTestDto.getTestName() != null){
+                minorLabTest.setTestName(minorLabTestDto.getTestName());
+            }
+            if(minorLabTestDto.getTestPrice() != null){
+                minorLabTest.setTestPrice(minorLabTestDto.getTestPrice());
+            }
+            if(minorLabTestDto.getRemarks() != null){
+                minorLabTest.setRemarks(minorLabTestDto.getRemarks());
+            }
+        }
+//        minorLabTestRepository.updateTestByTestId(minorLabTestId, minorLabTest.getTestName(), minorLabTest.getTestPrice(),  minorLabTest.getRemarks());
+        return minorLabTest;
     }
 }

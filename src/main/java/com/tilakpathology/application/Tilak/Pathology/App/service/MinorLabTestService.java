@@ -14,4 +14,6 @@ public interface MinorLabTestService {
     List<MinorLabTest> getAllMinorLabTests();
 
     Optional<MinorLabTestResponseDto> getAllMinorLabTestByTestId(String testId);
+
+    MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId);
 }

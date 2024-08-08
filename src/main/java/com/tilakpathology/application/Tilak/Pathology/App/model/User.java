@@ -1,17 +1,21 @@
 package com.tilakpathology.application.Tilak.Pathology.App.model;
 
+import com.tilakpathology.application.Tilak.Pathology.App.model.Enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -24,8 +28,8 @@ public class User implements UserDetails {
     private BigInteger Id;
 
     private String userId;
-    private String emailId;
 
+    private String emailId;
     private String userName;
 
     private String fullName;
@@ -34,10 +38,14 @@ public class User implements UserDetails {
 
     private String timestamp;
 
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
+
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return List.of();
     }
 

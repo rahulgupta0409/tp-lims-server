@@ -14,15 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/auth")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -32,6 +30,9 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
 
 
@@ -46,6 +47,8 @@ public class UserController {
         if(userSignInDto.getUserName() == null || userSignInDto.getPassword() == null){
             throw new BadRequestException("SignIn Credentials are not valid.");
         }
+
+
         User user = userService.SignIn(userSignInDto);
         LoginResponse loginResponse = new LoginResponse();
 
@@ -56,6 +59,7 @@ public class UserController {
             loginResponse.setToken(jwtToken);
             loginResponse.setExpiresIn(jwtService.getExpirationTime());
         }
+        System.out.println(loginResponse);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 }

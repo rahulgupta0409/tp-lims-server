@@ -6,6 +6,7 @@ import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadReq
 import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
 import com.tilakpathology.application.Tilak.Pathology.App.service.MinorLabTestService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/v1")
+@RequestMapping("/v1/minortest")
 public class MinorTestController {
 
     private final Logger log = LoggerFactory.getLogger(MinorTestController.class);
@@ -51,6 +52,13 @@ public class MinorTestController {
     public ResponseEntity<Optional<MinorLabTestResponseDto>> getMinorTestByTestId(@RequestParam String testId) {
         Optional<MinorLabTestResponseDto> minorLabTestResponseDto = minorLabTestService.getAllMinorLabTestByTestId(testId);
         return new ResponseEntity<>(minorLabTestResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/updateMinorLabTestById")
+    @Operation(summary = "Updating the minor lab test.")
+    public ResponseEntity<MinorLabTest> updateMinorLabTestById(@RequestBody MinorLabTestDto minorLabTestDto, @RequestHeader("MinorLabTestId")String minorLabTestId){
+        MinorLabTest minorLabTest = minorLabTestService.updateMinorLabTest(minorLabTestDto, minorLabTestId);
+        return new ResponseEntity<>(minorLabTest, HttpStatus.OK);
     }
 }
 

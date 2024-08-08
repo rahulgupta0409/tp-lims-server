@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
+import java.util.List;
 
 
 @Data
@@ -34,7 +35,27 @@ public class Patient {
 
     private String emailId;
 
+    private List<MinorLabTest> labTests;
+
+    private String org;
+
+    private String referredDoctorId;
+
+    private Boolean isUpi;
+
+    private Integer totalAmount;
+
+    private Integer discount;
+
+    private Integer paidAmount;
+
+    private Integer dueAmount;
+
+    private String createdBy;
+
     private String createdDate;
+
+    private String updatedBy;
 
     private String updatedDate;
 }
