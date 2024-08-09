@@ -9,6 +9,11 @@ import com.tilakpathology.application.Tilak.Pathology.App.service.MinorLabTestSe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +30,9 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
 
     @Autowired
     private MinorLabTestRepository minorLabTestRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
 
     @Override
@@ -70,21 +78,19 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
 
     @Override
     public MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId) {
-        MinorLabTest minorLabTest = minorLabTestRepository.getTestByTestId(minorLabTestId);
-        if(minorLabTest != null){
-            minorLabTest.setTestId(minorLabTestId);
-            minorLabTest.setId(minorLabTest.getId());
-            if(minorLabTestDto.getTestName() != null){
-                minorLabTest.setTestName(minorLabTestDto.getTestName());
-            }
-            if(minorLabTestDto.getTestPrice() != null){
-                minorLabTest.setTestPrice(minorLabTestDto.getTestPrice());
-            }
-            if(minorLabTestDto.getRemarks() != null){
-                minorLabTest.setRemarks(minorLabTestDto.getRemarks());
-            }
+        Query query = new Query().addCriteria(Criteria.where("testId").is(minorLabTestId));
+        FindAndModifyOptions options = new FindAndModifyOptions().remove(true).returnNew(true);
+        Update updateDefinition = new Update();
+        if (minorLabTestDto.getTestName() != null) {
+            updateDefinition.set("testName", minorLabTestDto.getTestName());
         }
-//        minorLabTestRepository.updateTestByTestId(minorLabTestId, minorLabTest.getTestName(), minorLabTest.getTestPrice(),  minorLabTest.getRemarks());
-        return minorLabTest;
+        if (minorLabTestDto.getTestPrice() != null) {
+            updateDefinition.set("testPrice", minorLabTestDto.getTestPrice());
+        }
+        if (minorLabTestDto.getRemarks() != null) {
+            updateDefinition.set("remarks", minorLabTestDto.getRemarks());
+        }
+        mongoTemplate.findAndModify(query, updateDefinition, options, MinorLabTest.class);
+        return null;
     }
 }
