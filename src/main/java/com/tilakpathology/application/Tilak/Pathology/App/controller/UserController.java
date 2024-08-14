@@ -2,6 +2,7 @@ package com.tilakpathology.application.Tilak.Pathology.App.controller;
 
 
 import com.tilakpathology.application.Tilak.Pathology.App.config.securityconfig.JwtService;
+import com.tilakpathology.application.Tilak.Pathology.App.dto.RefreshTokenRequest;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.UserDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.UserSignInDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.LoginResponse;
@@ -55,11 +56,27 @@ public class UserController {
         if(user != null){
             String jwtToken = jwtService.generateToken(user);
 
+            String jwtRefreshtoken = jwtService.generateRefreshToken(user);
+
             loginResponse.setUser(user);
             loginResponse.setToken(jwtToken);
-            loginResponse.setExpiresIn(jwtService.getExpirationTime());
+            loginResponse.setRefreshToken(jwtRefreshtoken);
+            loginResponse.setJwtRefreshTokenExpiresIn(jwtService.getJwtRefreshTokenExpirationTime());
+            loginResponse.setJwtTokenExpiresIn(jwtService.getExpirationTime());
         }
         System.out.println(loginResponse);
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/refresh")
+    public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        LoginResponse loginResponse = new LoginResponse();
+        String username = jwtService.extractUsername(refreshTokenRequest.getRefreshToken());
+        if (jwtService.validateToken(refreshTokenRequest.getRefreshToken(), username)) {
+            String newJwtToken = jwtService.generateToken(username);
+            String newRefreshToken = jwtService.generateRefreshToken(username);
+            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        }
+        throw new RuntimeException("Invalid refresh token");
     }
 }

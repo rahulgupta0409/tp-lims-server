@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public interface MinorLabTestService {
 
-    MinorLabTestResponseDto addMinorLabTest(MinorLabTestDto minorLabTestDto);
+    MinorLabTest addMinorLabTest(MinorLabTestDto minorLabTestDto);
 
     List<MinorLabTest> getAllMinorLabTests();
 
     Optional<MinorLabTestResponseDto> getAllMinorLabTestByTestId(String testId);
 
     MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId);
+
+    void deleteMinorLabTestById(String testId);
 }

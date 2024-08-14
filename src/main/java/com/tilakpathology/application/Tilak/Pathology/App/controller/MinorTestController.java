@@ -29,15 +29,15 @@ public class MinorTestController {
 
     @PostMapping(value = "/addMinorTest")
     @Operation(summary = "Save the Minor test Info into the database.")
-    public ResponseEntity<MinorLabTestResponseDto> addMinorTest(@RequestBody MinorLabTestDto minorLabTestDto) {
+    public ResponseEntity<MinorLabTest> addMinorTest(@RequestBody MinorLabTestDto minorLabTestDto) {
 
         if(minorLabTestDto.getTestName() == null || minorLabTestDto.getTestPrice() == null){
             log.info("Invalid Input of Minor Test TestName: {}, Test Price: {}"
                     , minorLabTestDto.getTestName(), minorLabTestDto.getTestPrice());
             throw new BadRequestException("Invalid Input of Minor Test");
         }
-        MinorLabTestResponseDto minorLabTestResponseDto = minorLabTestService.addMinorLabTest(minorLabTestDto);
-        return new ResponseEntity<>(minorLabTestResponseDto, HttpStatus.CREATED);
+        MinorLabTest minorLabTest = minorLabTestService.addMinorLabTest(minorLabTestDto);
+        return new ResponseEntity<>(minorLabTest, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/getAllMinorTests")
@@ -59,6 +59,12 @@ public class MinorTestController {
     public ResponseEntity<MinorLabTest> updateMinorLabTestById(@RequestBody MinorLabTestDto minorLabTestDto, @RequestHeader("MinorLabTestId")String minorLabTestId){
         MinorLabTest minorLabTest = minorLabTestService.updateMinorLabTest(minorLabTestDto, minorLabTestId);
         return new ResponseEntity<>(minorLabTest, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteMinorLabTestBy/{testId}")
+    @Operation(summary = "Deleting minor lab test.")
+    public void deleteMinorLabTestById(@PathVariable String testId){
+        minorLabTestService.deleteMinorLabTestById(testId);
     }
 }
 

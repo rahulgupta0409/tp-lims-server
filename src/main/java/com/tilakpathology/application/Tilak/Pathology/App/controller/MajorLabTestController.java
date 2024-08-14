@@ -46,6 +46,7 @@ public class MajorLabTestController {
     @Operation(summary = "Fetching all Major Tests.")
     public ResponseEntity<List<MajorLabTest>> getAllMajorTests() {
         List<MajorLabTest> majorLabTestList = majorLabTestService.getAllMajorLabTests();
+        log.info("Getting All the tests: {}", majorLabTestList);
         return new ResponseEntity<>(majorLabTestList, HttpStatus.OK);
     }
 
