@@ -15,7 +15,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "all-lab-tests")
+@Document(collection = "minor-lab-tests")
 @Schema(description = "All details about the minor Lab Tests.")
 public class MinorLabTest {
 
@@ -29,4 +29,12 @@ public class MinorLabTest {
     private Float testPrice;
 
     private String remarks;
+
+    private String createdOn;
+
+    private String createdBy;
+
+    private String updatedOn;
+
+    private String updatedBy;
 }

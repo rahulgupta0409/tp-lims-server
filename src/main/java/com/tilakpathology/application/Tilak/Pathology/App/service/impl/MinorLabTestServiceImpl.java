@@ -9,6 +9,7 @@ import com.tilakpathology.application.Tilak.Pathology.App.service.MinorLabTestSe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,10 +17,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.tilakpathology.application.Tilak.Pathology.App.constants.DBConstants.MINOR_LAB_TEST_ID;
+import static com.tilakpathology.application.Tilak.Pathology.App.constants.DBConstants.MINOR_TEST_COLLECTION;
 import static com.tilakpathology.application.Tilak.Pathology.App.constants.IntegerConstants.SEVEN;
 
 
@@ -36,27 +40,25 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
 
 
     @Override
-    public MinorLabTestResponseDto addMinorLabTest(MinorLabTestDto minorLabTestDto) {
+    public MinorLabTest addMinorLabTest(MinorLabTestDto minorLabTestDto) {
         MinorLabTest minorLabTest = MinorLabTest.builder()
                 .testId(UUID.randomUUID() + UUID.randomUUID().toString().substring(SEVEN))
                 .testName(minorLabTestDto.getTestName())
                 .testPrice(minorLabTestDto.getTestPrice())
                 .remarks(minorLabTestDto.getRemarks())
+                .createdOn(LocalDateTime.now().toString())
                 .build();
         minorLabTestRepository.save(minorLabTest);
 
         log.info("Minor Test Created Successfully with testId: {}", minorLabTest.getTestId() );
 
-        return MinorLabTestResponseDto.builder()
-                .testId(minorLabTest.getTestId())
-                .testName(minorLabTest.getTestName())
-                .testPrice(minorLabTest.getTestPrice())
-                .build();
+        return minorLabTest;
     }
 
     @Override
     public List<MinorLabTest> getAllMinorLabTests() {
-        List<MinorLabTest> minorLabTest = minorLabTestRepository.findAll();
+        Sort sort = Sort.by(Sort.Order.desc("createdOn"));
+        List<MinorLabTest> minorLabTest = minorLabTestRepository.findAll(sort);
         log.info("Fetched All List of Minor Lab Tests");
         return minorLabTest;
     }
@@ -92,5 +94,13 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
         }
         mongoTemplate.findAndModify(query, updateDefinition, options, MinorLabTest.class);
         return null;
+    }
+
+    @Override
+    public void deleteMinorLabTestById(String testId) {
+        Query query = new Query(Criteria.where(MINOR_LAB_TEST_ID).is(testId));
+
+        mongoTemplate.remove(query, MINOR_TEST_COLLECTION);
+//        log.info("query",query);
     }
 }

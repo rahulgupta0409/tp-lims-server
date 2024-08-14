@@ -26,6 +26,9 @@ public class JwtService {
     @Value("${security.jwt.expiration-time}")
     private long jwtExpiration;
 
+    @Value("${security.jwt.refresh-expiration-time}")
+    private long jwtRefreshTokenExpiration;
+
     public String extractUserName(String token){
         return extractClaim(token, Claims::getSubject);
     }
@@ -42,10 +45,39 @@ public class JwtService {
         return buildToken(extractClaims, userDetails, jwtExpiration);
     }
 
+    public String generateToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtRefreshTokenExpiration))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails userDetails){
+        return generateToken(new HashMap<>(), userDetails);
+    }
+    public String generateRefreshToken(Map<String, Object> extractClaims, UserDetails userDetails){
+        return buildToken(extractClaims, userDetails, jwtRefreshTokenExpiration);
+    }
+
 
 
     public long getExpirationTime(){
         return jwtExpiration;
+    }
+
+    public long getJwtRefreshTokenExpirationTime(){
+        return jwtRefreshTokenExpiration;
     }
 
     private String buildToken(
@@ -76,6 +108,9 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
     private Claims extractAllClaims(String token){
         return Jwts
                 .parserBuilder()
@@ -83,6 +118,10 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public boolean validateToken(String token, String username) {
+        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
     private Key getSignInKey(){
