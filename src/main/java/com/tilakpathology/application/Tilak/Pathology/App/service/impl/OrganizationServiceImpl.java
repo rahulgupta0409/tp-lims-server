@@ -36,7 +36,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
 //        Mail mail = new Mail();
 //        mail.setMailFrom("rahulguptaharsh081218@gmail.com");
-//        mail.setMailTo("himanshu.path@gmail.com");
+//        mail.setMailTo("rohangupta4461@gmail.com");
 //        mail.setMailContent("Kya be kya haal?");
 //        mail.setMailSubject("Your Organization is registered..");
 //        mailService.sendEmail(mail);

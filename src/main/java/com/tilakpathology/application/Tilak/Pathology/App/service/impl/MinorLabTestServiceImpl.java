@@ -45,6 +45,7 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
                 .testId(UUID.randomUUID() + UUID.randomUUID().toString().substring(SEVEN))
                 .testName(minorLabTestDto.getTestName())
                 .testPrice(minorLabTestDto.getTestPrice())
+                .minorTestUnit(minorLabTestDto.getMinorTestUnit())
                 .remarks(minorLabTestDto.getRemarks())
                 .createdOn(LocalDateTime.now().toString())
                 .build();
@@ -88,6 +89,9 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
         }
         if (minorLabTestDto.getTestPrice() != null) {
             updateDefinition.set("testPrice", minorLabTestDto.getTestPrice());
+        }
+        if(minorLabTestDto.getMinorTestUnit() != null){
+            updateDefinition.set("minorLabTestUnit", minorLabTestDto.getMinorTestUnit());
         }
         if (minorLabTestDto.getRemarks() != null) {
             updateDefinition.set("remarks", minorLabTestDto.getRemarks());

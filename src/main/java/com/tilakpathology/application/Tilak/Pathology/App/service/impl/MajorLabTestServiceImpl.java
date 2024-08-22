@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +44,9 @@ public class MajorLabTestServiceImpl implements MajorLabTestService {
                 .majorTestName(majorLabTestDto.getMajorTestName())
                 .majorTestPrice(allLabTestPrice)
                 .minorLabTestList(majorLabTestDto.getMinorLabTestList())
-                .majorTestRemarks(majorLabTestDto.getMajorTestRemarks()).build();
+                .majorTestRemarks(majorLabTestDto.getMajorTestRemarks())
+                .createdOn(LocalDateTime.now().toString())
+                .build();
         majorLabTestRepository.save(majorLabTest);
         return majorLabTest;
     }

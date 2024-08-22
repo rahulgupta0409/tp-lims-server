@@ -16,5 +16,7 @@ public class MinorLabTestDto {
 
     private Float testPrice;
 
+    private String minorTestUnit;
+
     private String remarks;
 }

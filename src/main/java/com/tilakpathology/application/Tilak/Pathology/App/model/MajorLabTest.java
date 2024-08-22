@@ -33,4 +33,12 @@ public class MajorLabTest {
     private Float majorTestPrice;
 
     private String majorTestRemarks;
+
+    private String createdOn;
+
+    private String createdBy;
+
+    private String updatedOn;
+
+    private String updatedBy;
 }

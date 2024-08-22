@@ -28,6 +28,8 @@ public class MinorLabTest {
 
     private Float testPrice;
 
+    private String minorTestUnit;
+
     private String remarks;
 
     private String createdOn;

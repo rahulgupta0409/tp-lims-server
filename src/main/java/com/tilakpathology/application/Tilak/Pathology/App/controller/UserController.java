@@ -75,6 +75,10 @@ public class UserController {
         if (jwtService.validateToken(refreshTokenRequest.getRefreshToken(), username)) {
             String newJwtToken = jwtService.generateToken(username);
             String newRefreshToken = jwtService.generateRefreshToken(username);
+            loginResponse.setToken(newJwtToken);
+            loginResponse.setRefreshToken(newRefreshToken);
+            loginResponse.setJwtRefreshTokenExpiresIn(jwtService.getJwtRefreshTokenExpirationTime());
+            loginResponse.setJwtTokenExpiresIn(jwtService.getExpirationTime());
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
         }
         throw new RuntimeException("Invalid refresh token");
