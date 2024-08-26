@@ -32,6 +32,12 @@ public class MinorLabTest {
 
     private String remarks;
 
+    private Integer minAge;
+
+    private Integer maxAge;
+
+    private String defaultValue;
+
     private String createdOn;
 
     private String createdBy;

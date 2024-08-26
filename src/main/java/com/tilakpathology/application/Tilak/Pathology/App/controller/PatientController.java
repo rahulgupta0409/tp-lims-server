@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.CompletableFuture;
+
 
 @RestController
 @RequestMapping("/v1/patient")
@@ -26,21 +28,37 @@ public class PatientController {
     private PatientService patientService;
 
 
+//    @PostMapping(value = "/addPatient")
+//    @Operation(summary = "Save the Patient Info into the database.")
+//    public ResponseEntity<CompletableFuture<PatientResponseDto>> addPatient(@RequestBody PatientDto patientDto){
+//
+//        if(!RegexpConstants.EMAIL_REGEXP.matcher(patientDto.getEmailId()).matches()){
+//            log.info("Patient's Email Id: {} is not valid", patientDto.getEmailId());
+//            throw new BadRequestException("Email Id is not Valid");
+//        }
+////        if(!RegexpConstants.PHONE_NUMBER_REGEXP.matcher(patientDto.getPhoneNumber()).matches()){
+////            log.info("Patient's Phone Number: {} is not valid", patientDto.getPhoneNumber());
+////            throw new BadRequestException("Phone Number is not Valid");
+////        }
+//
+//        CompletableFuture<PatientResponseDto> patientResponse = patientService.addPatient(patientDto);
+//        return new ResponseEntity<>(patientResponse, HttpStatus.CREATED);
+//    }
+
     @PostMapping(value = "/addPatient")
     @Operation(summary = "Save the Patient Info into the database.")
-    public ResponseEntity<PatientResponseDto> addPatient(@RequestBody PatientDto patientDto){
+    public CompletableFuture<ResponseEntity<PatientResponseDto>> addPatient(@RequestBody PatientDto patientDto) {
 
         if(!RegexpConstants.EMAIL_REGEXP.matcher(patientDto.getEmailId()).matches()){
             log.info("Patient's Email Id: {} is not valid", patientDto.getEmailId());
             throw new BadRequestException("Email Id is not Valid");
         }
-//        if(!RegexpConstants.PHONE_NUMBER_REGEXP.matcher(patientDto.getPhoneNumber()).matches()){
-//            log.info("Patient's Phone Number: {} is not valid", patientDto.getPhoneNumber());
-//            throw new BadRequestException("Phone Number is not Valid");
-//        }
 
-        PatientResponseDto patientResponse = patientService.addPatient(patientDto);
-        return new ResponseEntity<>(patientResponse, HttpStatus.CREATED);
+        return patientService.addPatient(patientDto)
+                .thenApply(patientResponse -> ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(patientResponse)
+                );
     }
 
 }
