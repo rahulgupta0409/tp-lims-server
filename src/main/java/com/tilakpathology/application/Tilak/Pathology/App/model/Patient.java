@@ -1,5 +1,8 @@
 package com.tilakpathology.application.Tilak.Pathology.App.model;
 
+import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Doctor;
+import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Org;
+import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Tests;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,11 +38,11 @@ public class Patient {
 
     private String emailId;
 
-    private List<MinorLabTest> labTests;
+    private List<Tests> tests;
 
-    private String org;
+    private Org org;
 
-    private String referredDoctorId;
+    private Doctor doctor;
 
     private Boolean isUpi;
 
@@ -59,3 +62,7 @@ public class Patient {
 
     private String updatedDate;
 }
+
+
+
+

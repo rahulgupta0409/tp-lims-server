@@ -8,4 +8,6 @@ import java.math.BigInteger;
 
 @Repository
 public interface DoctorRepository extends MongoRepository<Doctors, BigInteger> {
+
+
 }

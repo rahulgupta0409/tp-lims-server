@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,9 +26,9 @@ public class PatientDto {
 
     private String emailId;
 
-    private List<MinorLabTest> labTests;
+    private Set<String> labTestIds;
 
-    private String org;
+    private String orgId;
 
     private String referredDoctorId;
 

@@ -3,7 +3,9 @@ package com.tilakpathology.application.Tilak.Pathology.App.service;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.PatientDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.PatientResponseDto;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface PatientService {
 
-    PatientResponseDto addPatient(PatientDto patientDto);
+    CompletableFuture<PatientResponseDto> addPatient(PatientDto patientDto);
 }
