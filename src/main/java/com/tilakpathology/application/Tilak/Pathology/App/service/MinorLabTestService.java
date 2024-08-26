@@ -18,4 +18,5 @@ public interface MinorLabTestService {
     MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId);
 
     void deleteMinorLabTestById(String testId);
+
 }
