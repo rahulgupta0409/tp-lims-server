@@ -3,11 +3,13 @@ package com.tilakpathology.application.Tilak.Pathology.App.service;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.DoctorDto;
 import com.tilakpathology.application.Tilak.Pathology.App.model.Doctors;
 
+import java.util.List;
+
 public interface DoctorService {
 
-    void createDoctor(DoctorDto doctorDto);
+    Doctors createDoctor(DoctorDto doctorDto);
 
-    Doctors getAllDoctors();
+    List<Doctors> getAllDoctors();
 
     Doctors getDoctorById(String doctorId);
 

@@ -1,4 +1,4 @@
-package com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel;
+package com.tilakpathology.application.Tilak.Pathology.App.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MinorTest {
+public class DefaultValueRangeDto {
 
     private String testId;
 
-    private String testName;
+    private Integer minAge;
 
-    private String value;
-
-    private String remarks;
+    private Integer maxAge;
 
     private String defaultValue;
+
+    private String defaultRemark;
 }

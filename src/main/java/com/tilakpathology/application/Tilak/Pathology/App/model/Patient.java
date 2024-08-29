@@ -42,9 +42,11 @@ public class Patient {
 
     private Org org;
 
-    private Doctor doctor;
+    private Doctor referredDoctor;
 
     private Boolean isUpi;
+
+    private Boolean isOutSampled;
 
     private Integer totalAmount;
 

@@ -2,9 +2,11 @@ package com.tilakpathology.application.Tilak.Pathology.App.controller;
 
 
 import com.tilakpathology.application.Tilak.Pathology.App.constants.RegexpConstants;
+import com.tilakpathology.application.Tilak.Pathology.App.dao.patientcustomrepository.PatientResult;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.PatientDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.PatientResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
+import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
 import com.tilakpathology.application.Tilak.Pathology.App.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -59,6 +62,13 @@ public class PatientController {
                         .status(HttpStatus.CREATED)
                         .body(patientResponse)
                 );
+    }
+
+    @GetMapping(value = "/getAllPatients")
+    @Operation(summary = "Fetching all Patients.")
+    public ResponseEntity<List<?>> getAllPatients() {
+        List<?> patientResultList = patientService.getAllPatients();
+        return new ResponseEntity<>(patientResultList, HttpStatus.OK);
     }
 
 }

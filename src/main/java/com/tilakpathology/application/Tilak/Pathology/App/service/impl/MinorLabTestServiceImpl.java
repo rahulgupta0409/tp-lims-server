@@ -107,4 +107,5 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
         mongoTemplate.remove(query, MINOR_TEST_COLLECTION);
 //        log.info("query",query);
     }
+
 }

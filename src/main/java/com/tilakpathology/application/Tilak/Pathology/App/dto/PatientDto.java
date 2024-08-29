@@ -30,9 +30,11 @@ public class PatientDto {
 
     private String orgId;
 
-    private String referredDoctorId;
+    private String doctorId;
 
     private Boolean isUpi;
+
+    private Boolean isOutSampled;
 
     private Integer totalAmount;
 

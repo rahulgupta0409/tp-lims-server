@@ -9,34 +9,28 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
-import java.util.List;
-import java.util.Set;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "doctors")
-@Schema(description = "All details about the Doctors.")
-public class Doctors {
+@Document(collection = "default-value-range")
+@Schema(description = "All details of default test value for TestIds.")
+public class DefaultValueRange {
 
     @Id
     private BigInteger Id;
 
-    private String doctorId;
+    private String defaultValueRangeId;
 
-    private String doctorName;
+    private String testId;
 
-    private Set<String> orgId;
+    private Integer minAge;
 
-    private String doctorDetails;
+    private Integer maxAge;
 
-    private String createdDate;
+    private String defaultValue;
 
-    private String createdBy;
-
-    private String updatedDate;
-
-    private String updatedBy;
+    private String defaultRemark;
 }
