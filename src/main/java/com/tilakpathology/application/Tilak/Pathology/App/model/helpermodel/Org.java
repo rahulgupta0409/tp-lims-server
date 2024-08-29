@@ -13,5 +13,4 @@ public class Org {
 
     private String orgId;
 
-    private String orgName;
 }

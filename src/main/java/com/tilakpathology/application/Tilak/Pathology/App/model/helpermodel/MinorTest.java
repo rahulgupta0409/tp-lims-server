@@ -18,4 +18,6 @@ public class MinorTest {
     private String value;
 
     private String remarks;
+
+    private String defaultValue;
 }

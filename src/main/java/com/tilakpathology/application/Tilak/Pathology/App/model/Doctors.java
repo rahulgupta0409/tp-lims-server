@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -27,7 +28,15 @@ public class Doctors {
 
     private String doctorName;
 
-    private List<String> orgId;
+    private Set<String> orgId;
 
     private String doctorDetails;
+
+    private String createdDate;
+
+    private String createdBy;
+
+    private String updatedDate;
+
+    private String updatedBy;
 }

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Doctor {
 
-    private String referredDoctorId;
+    private String doctorId;
 
-    private String referredDoctorName;
 }

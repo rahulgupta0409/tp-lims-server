@@ -1,16 +1,12 @@
 package com.tilakpathology.application.Tilak.Pathology.App.service.impl;
 
-import com.tilakpathology.application.Tilak.Pathology.App.dao.MajorLabTestRepository;
-import com.tilakpathology.application.Tilak.Pathology.App.dao.MinorLabTestRepository;
-import com.tilakpathology.application.Tilak.Pathology.App.dao.OrganizationRepository;
-import com.tilakpathology.application.Tilak.Pathology.App.dao.PatientRepository;
+import com.tilakpathology.application.Tilak.Pathology.App.dao.*;
+import com.tilakpathology.application.Tilak.Pathology.App.dao.patientcustomrepository.PatientResult;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.PatientDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.PatientResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
-import com.tilakpathology.application.Tilak.Pathology.App.model.MajorLabTest;
-import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
-import com.tilakpathology.application.Tilak.Pathology.App.model.Organization;
-import com.tilakpathology.application.Tilak.Pathology.App.model.Patient;
+import com.tilakpathology.application.Tilak.Pathology.App.model.*;
+import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Doctor;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.MinorTest;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Org;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Tests;
@@ -45,6 +41,9 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @Autowired
+    private DoctorRepository doctorRepository;
+
 
 
     @Override
@@ -53,6 +52,7 @@ public class PatientServiceImpl implements PatientService {
         CompletableFuture<List<Tests>> majorTestsFuture = getAllMajorTests(patientDto.getLabTestIds());
         CompletableFuture<List<Tests>> minorTestsFuture = getAllMinorTests(patientDto.getLabTestIds());
         CompletableFuture<Org> organizationFuture = getOrganization(patientDto.getOrgId());
+        CompletableFuture<Doctor> doctorFuture = getDoctor(patientDto.getDoctorId());
 
         return CompletableFuture.allOf(majorTestsFuture, minorTestsFuture, organizationFuture)
                 .thenApplyAsync(v -> {
@@ -60,6 +60,7 @@ public class PatientServiceImpl implements PatientService {
                         List<Tests> majorTests = majorTestsFuture.get();
                         List<Tests> minorTests = minorTestsFuture.get();
                         Org organization = organizationFuture.get();
+                        Doctor doctor = doctorFuture.get();
                         List<Tests> allTests = new ArrayList<>();
                         allTests.addAll(majorTests);
                         allTests.addAll(minorTests);
@@ -73,6 +74,7 @@ public class PatientServiceImpl implements PatientService {
                                 .emailId(patientDto.getEmailId())
                                 .tests(allTests)
                                 .org(organization)
+                                .referredDoctor(doctor)
                                 .isUpi(patientDto.getIsUpi())
                                 .discount(patientDto.getDiscount())
                                 .dueAmount(patientDto.getDueAmount())
@@ -100,6 +102,7 @@ public class PatientServiceImpl implements PatientService {
                     }
                 });
     }
+
 
     private CompletableFuture<List<Tests>> getAllMajorTests(Set<String> testIds) {
         return CompletableFuture.supplyAsync(() -> {
@@ -144,10 +147,25 @@ public class PatientServiceImpl implements PatientService {
     private CompletableFuture<Org> getOrganization(String orgId) {
         return CompletableFuture.supplyAsync(() -> {
             Organization organization = organizationRepository.findByOrganizationId(orgId);
-            return Org.builder()
+            return (organization != null) ? Org.builder()
                     .orgId(organization.getOrgId())
-                    .orgName(organization.getOrgName())
-                    .build();
+                    .build() : null;
         });
     }
+
+    private CompletableFuture<Doctor> getDoctor(String doctorId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Doctors doctors = doctorRepository.findDoctorByDoctorId(doctorId);
+            return (doctors!=null) ? Doctor.builder()
+                    .doctorId(doctors.getDoctorId())
+                    .build() : null;
+        });
+    }
+
+    @Override
+    public List<?> getAllPatients() {
+        List<PatientResult> patientResultList = patientRepository.findPatientsWithOrgNames();
+        return (patientResultList != null) ? patientResultList : null;
+    }
+
 }

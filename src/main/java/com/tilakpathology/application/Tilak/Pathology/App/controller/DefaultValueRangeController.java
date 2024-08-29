@@ -1,10 +1,7 @@
 package com.tilakpathology.application.Tilak.Pathology.App.controller;
 
 import com.tilakpathology.application.Tilak.Pathology.App.dto.DefaultValueRangeDto;
-import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestDto;
-import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
 import com.tilakpathology.application.Tilak.Pathology.App.model.DefaultValueRange;
-import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
 import com.tilakpathology.application.Tilak.Pathology.App.service.DefaultValueRangeService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
