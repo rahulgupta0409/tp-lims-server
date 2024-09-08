@@ -15,4 +15,6 @@ public class OrganizationDto {
     private String orgName;
 
     private String orgDetails;
+
+    private String createdBy;
 }

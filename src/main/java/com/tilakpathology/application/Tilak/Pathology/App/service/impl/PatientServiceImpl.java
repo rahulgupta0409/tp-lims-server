@@ -76,6 +76,7 @@ public class PatientServiceImpl implements PatientService {
                                 .org(organization)
                                 .referredDoctor(doctor)
                                 .isUpi(patientDto.getIsUpi())
+                                .isOutSampled(patientDto.getIsOutSampled())
                                 .discount(patientDto.getDiscount())
                                 .dueAmount(patientDto.getDueAmount())
                                 .totalAmount(patientDto.getTotalAmount())

@@ -1,6 +1,7 @@
 package com.tilakpathology.application.Tilak.Pathology.App.service;
 
 import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestDto;
+import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestUpdateDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.MinorLabTestResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
 
@@ -15,7 +16,7 @@ public interface MinorLabTestService {
 
     Optional<MinorLabTestResponseDto> getAllMinorLabTestByTestId(String testId);
 
-    MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId);
+    MinorLabTest updateMinorLabTest(MinorLabTestUpdateDto minorLabTestDto, String minorLabTestId);
 
     void deleteMinorLabTestById(String testId);
 

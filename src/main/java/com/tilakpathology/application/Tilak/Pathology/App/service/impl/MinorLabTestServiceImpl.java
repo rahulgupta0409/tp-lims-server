@@ -2,6 +2,7 @@ package com.tilakpathology.application.Tilak.Pathology.App.service.impl;
 
 import com.tilakpathology.application.Tilak.Pathology.App.dao.MinorLabTestRepository;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestDto;
+import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestUpdateDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.MinorLabTestResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.ResourceNotFoundException;
 import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
@@ -48,6 +49,7 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
                 .minorTestUnit(minorLabTestDto.getMinorTestUnit())
                 .remarks(minorLabTestDto.getRemarks())
                 .createdOn(LocalDateTime.now().toString())
+                .createdBy(minorLabTestDto.getCreatedBy())
                 .build();
         minorLabTestRepository.save(minorLabTest);
 
@@ -80,7 +82,7 @@ public class MinorLabTestServiceImpl implements MinorLabTestService {
     }
 
     @Override
-    public MinorLabTest updateMinorLabTest(MinorLabTestDto minorLabTestDto, String minorLabTestId) {
+    public MinorLabTest updateMinorLabTest(MinorLabTestUpdateDto minorLabTestDto, String minorLabTestId) {
         Query query = new Query().addCriteria(Criteria.where("testId").is(minorLabTestId));
         FindAndModifyOptions options = new FindAndModifyOptions().remove(true).returnNew(true);
         Update updateDefinition = new Update();

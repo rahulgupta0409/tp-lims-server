@@ -1,6 +1,5 @@
 package com.tilakpathology.application.Tilak.Pathology.App.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MinorLabTestDto {
+public class MinorLabTestUpdateDto {
 
     private String testName;
 
@@ -20,5 +19,5 @@ public class MinorLabTestDto {
 
     private String remarks;
 
-    private String createdBy;
+    private String updatedBy;
 }
