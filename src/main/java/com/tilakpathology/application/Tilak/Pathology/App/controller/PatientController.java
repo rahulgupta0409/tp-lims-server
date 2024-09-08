@@ -50,18 +50,27 @@ public class PatientController {
 
     @PostMapping(value = "/addPatient")
     @Operation(summary = "Save the Patient Info into the database.")
-    public CompletableFuture<ResponseEntity<PatientResponseDto>> addPatient(@RequestBody PatientDto patientDto) {
+    public ResponseEntity<PatientResponseDto> addPatient(@RequestBody PatientDto patientDto) {
 
         if(!RegexpConstants.EMAIL_REGEXP.matcher(patientDto.getEmailId()).matches()){
             log.info("Patient's Email Id: {} is not valid", patientDto.getEmailId());
             throw new BadRequestException("Email Id is not Valid");
         }
+        patientService.addPatient(patientDto);
+        PatientResponseDto patientResponseDto = new PatientResponseDto();
+        patientResponseDto.setFirstName(patientDto.getFirstName());
 
-        return patientService.addPatient(patientDto)
-                .thenApply(patientResponse -> ResponseEntity
-                        .status(HttpStatus.CREATED)
-                        .body(patientResponse)
-                );
+        return new ResponseEntity<>(patientResponseDto, HttpStatus.CREATED);
+//        return patientService.addPatient(patientDto)
+//                .thenApply(patient -> {
+//                    PatientResponseDto patientResponseDto = new PatientResponseDto();
+//                    patientResponseDto.setFirstName(patient.getFirstName());
+//                    return ResponseEntity.status(HttpStatus.CREATED).body(patientResponseDto);
+//                })
+//                .exceptionally(ex -> {
+//                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                            .body(null);
+//                });
     }
 
     @GetMapping(value = "/getAllPatients")

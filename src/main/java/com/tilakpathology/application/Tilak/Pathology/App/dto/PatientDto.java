@@ -46,9 +46,4 @@ public class PatientDto {
 
     private String createdBy;
 
-    private String createdDate;
-
-    private String updatedBy;
-
-    private String updatedDate;
 }

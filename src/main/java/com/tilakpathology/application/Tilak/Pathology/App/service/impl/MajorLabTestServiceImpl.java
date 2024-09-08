@@ -45,6 +45,7 @@ public class MajorLabTestServiceImpl implements MajorLabTestService {
                 .majorTestPrice(allLabTestPrice)
                 .minorLabTestList(majorLabTestDto.getMinorLabTestList())
                 .majorTestRemarks(majorLabTestDto.getMajorTestRemarks())
+                .createdBy(majorLabTestDto.getCreatedBy())
                 .createdOn(LocalDateTime.now().toString())
                 .build();
         majorLabTestRepository.save(majorLabTest);

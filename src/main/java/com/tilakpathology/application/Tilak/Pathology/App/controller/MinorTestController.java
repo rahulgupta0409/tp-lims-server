@@ -1,6 +1,7 @@
 package com.tilakpathology.application.Tilak.Pathology.App.controller;
 
 import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestDto;
+import com.tilakpathology.application.Tilak.Pathology.App.dto.MinorLabTestUpdateDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.MinorLabTestResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
 import com.tilakpathology.application.Tilak.Pathology.App.model.MinorLabTest;
@@ -56,7 +57,7 @@ public class MinorTestController {
 
     @PutMapping(value = "/updateMinorLabTestById")
     @Operation(summary = "Updating the minor lab test.")
-    public ResponseEntity<MinorLabTest> updateMinorLabTestById(@RequestBody MinorLabTestDto minorLabTestDto, @RequestHeader("MinorLabTestId")String minorLabTestId){
+    public ResponseEntity<MinorLabTest> updateMinorLabTestById(@RequestBody MinorLabTestUpdateDto minorLabTestDto, @RequestHeader("MinorLabTestId")String minorLabTestId){
         MinorLabTest minorLabTest = minorLabTestService.updateMinorLabTest(minorLabTestDto, minorLabTestId);
         return new ResponseEntity<>(minorLabTest, HttpStatus.OK);
     }

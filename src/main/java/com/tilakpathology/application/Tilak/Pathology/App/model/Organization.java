@@ -27,4 +27,8 @@ public class Organization {
     private String orgName;
 
     private String orgDetails;
+
+    private String createdBy;
+
+    private String createdOn;
 }

@@ -9,6 +9,7 @@ import com.tilakpathology.application.Tilak.Pathology.App.service.OrganizationSe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +32,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .orgId(UUID.randomUUID() + UUID.randomUUID().toString().substring(SEVEN))
                 .orgName(organizationDto.getOrgName())
                 .orgDetails(organizationDto.getOrgDetails())
+                .createdBy(organizationDto.getCreatedBy())
+                .createdOn(LocalDateTime.now().toString())
                 .build();
         organizationRepository.save(organization);
 

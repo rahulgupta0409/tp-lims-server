@@ -22,4 +22,6 @@ public class MajorLabTestDto {
     private Float majorTestPrice;
 
     private String majorTestRemarks;
+
+    private String createdBy;
 }
