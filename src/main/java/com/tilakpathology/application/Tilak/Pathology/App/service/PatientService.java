@@ -13,5 +13,7 @@ public interface PatientService {
 
     List<?> getAllPatients();
 
+    List<?> getPatientsByStartEndDate(String startDate, String endDate);
+
 
 }
