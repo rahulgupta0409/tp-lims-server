@@ -80,4 +80,12 @@ public class PatientController {
         return new ResponseEntity<>(patientResultList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getAllPatientsByDateRange")
+    @Operation(summary = "Fetching all Patients.")
+    public ResponseEntity<List<?>> getAllPatientsByDateRange(@RequestParam String startDate, @RequestParam String endDate) {
+        List<?> patientResultList = patientService.getPatientsByStartEndDate(startDate, endDate);
+
+        return new ResponseEntity<>(patientResultList, HttpStatus.OK);
+    }
+
 }

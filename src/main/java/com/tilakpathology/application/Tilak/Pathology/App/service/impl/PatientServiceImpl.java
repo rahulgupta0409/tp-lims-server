@@ -169,4 +169,10 @@ public class PatientServiceImpl implements PatientService {
         return (patientResultList != null) ? patientResultList : null;
     }
 
+    @Override
+    public List<?> getPatientsByStartEndDate(String startDate, String endDate) {
+        List<Patient> patientResultList  = patientRepository.findAllPatientsBetweenDateTime(startDate, endDate);
+        return patientResultList;
+    }
+
 }
