@@ -53,6 +53,7 @@ public class PatientServiceImpl implements PatientService {
         CompletableFuture<List<Tests>> minorTestsFuture = getAllMinorTests(patientDto.getLabTestIds());
         CompletableFuture<Org> organizationFuture = getOrganization(patientDto.getOrgId());
         CompletableFuture<Doctor> doctorFuture = getDoctor(patientDto.getDoctorId());
+        System.out.println(patientDto.getGender());
 
         return CompletableFuture.allOf(majorTestsFuture, minorTestsFuture, organizationFuture)
                 .thenApplyAsync(v -> {
@@ -70,6 +71,7 @@ public class PatientServiceImpl implements PatientService {
                                 .firstName(patientDto.getFirstName())
                                 .lastName(patientDto.getLastName())
                                 .age(patientDto.getAge())
+                                .gender(patientDto.getGender())
                                 .phoneNumber(patientDto.getPhoneNumber())
                                 .emailId(patientDto.getEmailId())
                                 .tests(allTests)
@@ -93,6 +95,7 @@ public class PatientServiceImpl implements PatientService {
                                 .firstName(patient.getFirstName())
                                 .lastName(patient.getLastName())
                                 .age(patient.getAge())
+                                .gender(patient.getGender())
                                 .phoneNumber(patient.getPhoneNumber())
                                 .emailId(patient.getEmailId())
                                 .createdDate(patient.getCreatedDate())
