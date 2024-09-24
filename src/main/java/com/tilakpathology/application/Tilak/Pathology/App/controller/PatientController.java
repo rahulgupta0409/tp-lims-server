@@ -88,4 +88,11 @@ public class PatientController {
         return new ResponseEntity<>(patientResultList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/searchPatients")
+    @Operation(summary = "Fetching all Patients by Search")
+    public ResponseEntity<List<?>> searchPatients(@RequestParam String query){
+        List<?> patientList = patientService.searchPatients(query);
+        return new ResponseEntity<>(patientList, HttpStatus.OK);
+    }
+
 }
