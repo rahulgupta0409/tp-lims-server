@@ -19,5 +19,9 @@ public interface PatientRepository extends MongoRepository<Patient, BigInteger> 
     List<Patient> findAllPatientsBetweenDateTime(String startDate, String endDate);
 
 
+    @Query("{ '$text': { '$search': ?0 } }")
+    List<Patient> findPatientsBySearch(String searchItem);
+
+
 
 }

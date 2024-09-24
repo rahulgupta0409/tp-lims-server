@@ -3,6 +3,7 @@ package com.tilakpathology.application.Tilak.Pathology.App.service.impl;
 import com.tilakpathology.application.Tilak.Pathology.App.dao.*;
 import com.tilakpathology.application.Tilak.Pathology.App.dao.patientcustomrepository.PatientResult;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.PatientDto;
+import com.tilakpathology.application.Tilak.Pathology.App.dto.ReportProgressDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.PatientResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
 import com.tilakpathology.application.Tilak.Pathology.App.model.*;
@@ -11,6 +12,7 @@ import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Mino
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Org;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Tests;
 import com.tilakpathology.application.Tilak.Pathology.App.service.PatientService;
+import com.tilakpathology.application.Tilak.Pathology.App.service.ReportProgressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private ReportProgressService reportProgressService;
 
 
 
@@ -89,6 +94,20 @@ public class PatientServiceImpl implements PatientService {
 
                         patientRepository.save(patient);
                         log.info("Patient Successfully Created With PatientId {}", patient.getPatientId());
+
+                        /*
+                        Below line of code will create a record of
+                        report progress and save persist the data in report-progress collection.
+                         */
+                        ReportProgressDto reportProgressDto = new ReportProgressDto();
+                        reportProgressDto.setPatientId(patient.getPatientId());
+                        reportProgressDto.setProgress(10);
+                        List<Map<String, String>> workingList = new ArrayList<>();
+                        Map<String, String> working = new HashMap<>();
+                        working.put(patientDto.getCreatedBy(), "The patient has been created by the reception.");
+                        workingList.add(working);
+                        reportProgressDto.setWorking(workingList);
+                        reportProgressService.createReportProgress(reportProgressDto);
 
                         return PatientResponseDto.builder()
                                 .patientId(patient.getPatientId())
@@ -176,6 +195,12 @@ public class PatientServiceImpl implements PatientService {
     public List<?> getPatientsByStartEndDate(String startDate, String endDate) {
         List<Patient> patientResultList  = patientRepository.findAllPatientsBetweenDateTime(startDate, endDate);
         return patientResultList;
+    }
+
+    @Override
+    public List<?> searchPatients(String searchItem) {
+        List<Patient> patientList = patientRepository.findPatientsBySearch(searchItem);
+        return patientList;
     }
 
 }
