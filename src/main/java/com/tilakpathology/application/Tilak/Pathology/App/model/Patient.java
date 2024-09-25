@@ -26,6 +26,8 @@ public class Patient {
     @Id
     private BigInteger Id;
 
+    private Integer patientLabId;
+
     private String patientId;
 
     private String firstName;

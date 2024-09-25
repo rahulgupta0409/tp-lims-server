@@ -22,6 +22,9 @@ public interface PatientRepository extends MongoRepository<Patient, BigInteger> 
     @Query("{ '$text': { '$search': ?0 } }")
     List<Patient> findPatientsBySearch(String searchItem);
 
+    @Query("{'createdDate':{$gte:?0}}")
+    List<Patient> findPatientLabIdByCurrentDate(String createdDate);
+
 
 
 }
