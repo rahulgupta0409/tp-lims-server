@@ -15,7 +15,7 @@ public interface PatientService {
 
     List<?> getPatientsByStartEndDate(String startDate, String endDate);
 
-    List<?> searchPatients(String searchItem);
+    List<Patient> searchPatients(String searchItem);
 
 
 }

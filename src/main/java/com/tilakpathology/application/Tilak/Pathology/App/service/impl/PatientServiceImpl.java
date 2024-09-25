@@ -58,7 +58,21 @@ public class PatientServiceImpl implements PatientService {
         CompletableFuture<List<Tests>> minorTestsFuture = getAllMinorTests(patientDto.getLabTestIds());
         CompletableFuture<Org> organizationFuture = getOrganization(patientDto.getOrgId());
         CompletableFuture<Doctor> doctorFuture = getDoctor(patientDto.getDoctorId());
-        System.out.println(patientDto.getGender());
+
+
+        //2024-09-24T21:34:21.626111700
+        Integer patientLabTestId;
+        String currentDate = LocalDateTime.now().toString();
+        String currentDate1 = currentDate.substring(0,10);
+        currentDate = currentDate1 + "00:00:00.000000000";
+        List<Patient> recentPatients = patientRepository.findPatientLabIdByCurrentDate(currentDate);
+        Optional<Patient> recentPatient = recentPatients.stream()
+                .sorted(Comparator.comparingInt(Patient::getPatientLabId).reversed()).findFirst();
+        if(recentPatient.isPresent()){
+            patientLabTestId = recentPatient.get().getPatientLabId() + 1;
+        }else{
+            patientLabTestId = 1;
+        }
 
         return CompletableFuture.allOf(majorTestsFuture, minorTestsFuture, organizationFuture)
                 .thenApplyAsync(v -> {
@@ -76,6 +90,7 @@ public class PatientServiceImpl implements PatientService {
                                 .firstName(patientDto.getFirstName())
                                 .lastName(patientDto.getLastName())
                                 .age(patientDto.getAge())
+                                .patientLabId(patientLabTestId)
                                 .gender(patientDto.getGender())
                                 .phoneNumber(patientDto.getPhoneNumber())
                                 .emailId(patientDto.getEmailId())
@@ -198,7 +213,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<?> searchPatients(String searchItem) {
+    public List<Patient> searchPatients(String searchItem) {
         List<Patient> patientList = patientRepository.findPatientsBySearch(searchItem);
         return patientList;
     }
