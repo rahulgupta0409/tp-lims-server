@@ -17,6 +17,8 @@ public class MinorTest {
 
     private String value;
 
+    private String testUnit;
+
     private String remarks;
 
     private String defaultValue;

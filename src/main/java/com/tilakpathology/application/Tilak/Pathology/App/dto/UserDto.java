@@ -31,6 +31,10 @@ public class UserDto {
     @Size(min = 6, max = 40)
     private String password;
 
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String confirmPassword;
+
     private Set<String> roles;
 
 }
