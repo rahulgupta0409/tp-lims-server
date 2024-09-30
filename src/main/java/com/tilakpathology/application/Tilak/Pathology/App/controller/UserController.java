@@ -39,6 +39,9 @@ public class UserController {
 
     @PostMapping(path="/signup")
     public ResponseEntity<UserResponseDto> SignUp(@RequestBody UserDto userDto){
+//        if(userDto.getPassword() != userDto.getConfirmPassword()){
+//            throw new BadRequestException("Password and confirm password should be same.");
+//        }
         UserResponseDto userResponseDto = userService.SignUp(userDto);
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
     }

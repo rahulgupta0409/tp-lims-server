@@ -7,4 +7,6 @@ public class IntegerConstants {
     }
 
     public static final Integer SEVEN = 7;
+
+
 }

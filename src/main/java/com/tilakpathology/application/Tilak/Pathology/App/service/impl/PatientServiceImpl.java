@@ -214,8 +214,22 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<Patient> searchPatients(String searchItem) {
+//        String search = convertToSearchItem(searchItem);
         List<Patient> patientList = patientRepository.findPatientsBySearch(searchItem);
         return patientList;
+    }
+
+    private String convertToSearchItem(String str){
+        String ans = "";
+        for(int i=0; i<str.length() - 3; i++){
+            if(str.charAt(i) == '%'){
+                i += 3;
+                ans = "";
+                ans += i;
+            }
+            ans += i;
+        }
+        return ans;
     }
 
 }

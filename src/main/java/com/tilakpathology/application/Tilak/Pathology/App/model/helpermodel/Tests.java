@@ -21,6 +21,8 @@ public class Tests {
 
     private String remarks;
 
+    private String unit;
+
     private Boolean isMajorLabTest = false;
 
     private List<MinorTest> minorLabTestList;

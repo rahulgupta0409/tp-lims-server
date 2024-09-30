@@ -9,6 +9,8 @@ import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadReq
 import com.tilakpathology.application.Tilak.Pathology.App.model.Enums.UserRole;
 import com.tilakpathology.application.Tilak.Pathology.App.model.Role;
 import com.tilakpathology.application.Tilak.Pathology.App.model.User;
+import com.tilakpathology.application.Tilak.Pathology.App.service.OtpService;
+import com.tilakpathology.application.Tilak.Pathology.App.service.OtpServiceImpl;
 import com.tilakpathology.application.Tilak.Pathology.App.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private OtpServiceImpl otpService;
 
     @Override
     public UserResponseDto SignUp(UserDto userDto) {
@@ -89,7 +94,8 @@ public class UserServiceImpl implements UserService {
                     .password(password)
                     .timestamp(LocalDateTime.now().toString())
                     .build();
-            userRepository.save(userBuild);
+            otpService.generateOtp(userDto.getEmailId());
+//            userRepository.save(userBuild);
             System.out.println(user);
             return UserResponseDto.builder()
                     .userId(userBuild.getUserId())

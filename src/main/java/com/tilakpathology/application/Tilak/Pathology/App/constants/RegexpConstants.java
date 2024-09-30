@@ -13,4 +13,10 @@ public class RegexpConstants {
     public static final Pattern PHONE_NUMBER_REGEXP = Pattern.compile("^\\\\+?[1-9][0-9]{7,14}$");
     public static final String DATE_MONTH_PATTERN = "dd-MM-yyyy hh:mm:ss";
 
+    public static final Integer OTP_MIN_VALUE = 11111;
+
+    public static final Integer OTP_MAX_VALUE = 99999;
+
+
+
 }
