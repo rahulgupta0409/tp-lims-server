@@ -38,17 +38,26 @@ public class UserController {
 
 
     @PostMapping(path="/signup")
-    public ResponseEntity<UserResponseDto> SignUp(@RequestBody UserDto userDto){
+    public ResponseEntity<User> SignUp(@RequestBody UserDto userDto){
 //        if(userDto.getPassword() != userDto.getConfirmPassword()){
 //            throw new BadRequestException("Password and confirm password should be same.");
 //        }
-        UserResponseDto userResponseDto = userService.SignUp(userDto);
+        User userResponse = userService.SignUp(userDto);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping(path="/validateOtp")
+    public ResponseEntity<UserResponseDto> SignupValidation(@RequestParam Integer otp, @RequestBody User user){
+        if(user == null || otp == null){
+            throw new BadRequestException("The OTP or user is required.");
+        }
+        UserResponseDto userResponseDto = userService.ValidateOTP(otp, user);
         return new ResponseEntity<>(userResponseDto, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/signin")
     public ResponseEntity<LoginResponse> SignIn(@RequestBody UserSignInDto userSignInDto){
-        if(userSignInDto.getUserName() == null || userSignInDto.getPassword() == null){
+        if(userSignInDto.getUsername() == null || userSignInDto.getPassword() == null){
             throw new BadRequestException("SignIn Credentials are not valid.");
         }
 

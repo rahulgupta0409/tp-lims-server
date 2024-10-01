@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserSignInDto {
 
-    private String userName;
+    private String username;
 
     private String password;
 }

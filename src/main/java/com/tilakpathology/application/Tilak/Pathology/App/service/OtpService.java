@@ -5,4 +5,6 @@ import com.tilakpathology.application.Tilak.Pathology.App.model.Otp;
 public interface OtpService {
 
     Otp generateOtp(String email);
+
+    String validateOtp(String email, Integer otp);
 }

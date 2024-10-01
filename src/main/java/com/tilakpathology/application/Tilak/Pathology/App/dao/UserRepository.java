@@ -12,6 +12,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, BigInteger> {
 
-    @Query("{ 'userName' : ?0 }")
+    @Query("{ 'username' : ?0 }")
     User getUserByUserName(String userName);
+
+    @Query("{ 'emailId' : ?0 }")
+    User getUserByEmail(String email);
 }

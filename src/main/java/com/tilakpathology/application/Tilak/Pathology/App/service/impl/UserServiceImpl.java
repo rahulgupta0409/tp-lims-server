@@ -9,8 +9,6 @@ import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadReq
 import com.tilakpathology.application.Tilak.Pathology.App.model.Enums.UserRole;
 import com.tilakpathology.application.Tilak.Pathology.App.model.Role;
 import com.tilakpathology.application.Tilak.Pathology.App.model.User;
-import com.tilakpathology.application.Tilak.Pathology.App.service.OtpService;
-import com.tilakpathology.application.Tilak.Pathology.App.service.OtpServiceImpl;
 import com.tilakpathology.application.Tilak.Pathology.App.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,8 +35,9 @@ public class UserServiceImpl implements UserService {
     private OtpServiceImpl otpService;
 
     @Override
-    public UserResponseDto SignUp(UserDto userDto) {
-        User user = userRepository.getUserByUserName(userDto.getUserName());
+    public User SignUp(UserDto userDto) {
+        User user = userRepository.getUserByUserName(userDto.getUsername());
+        User userByEmail = userRepository.getUserByEmail(userDto.getEmailId());
 
         Set<String> strRoles = userDto.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -82,14 +81,14 @@ public class UserServiceImpl implements UserService {
 //        }
 
 
-        if(user == null){
+        if(user == null || userByEmail == null){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = passwordEncoder.encode(userDto.getPassword());
             User userBuild = User.builder()
                     .userId(UUID.randomUUID() + UUID.randomUUID().toString().substring(SEVEN))
                     .emailId(userDto.getEmailId())
                     .fullName(userDto.getFullName())
-                    .userName(userDto.getUserName())
+                    .username(userDto.getUsername())
                     .roles(roles)
                     .password(password)
                     .timestamp(LocalDateTime.now().toString())
@@ -97,20 +96,14 @@ public class UserServiceImpl implements UserService {
             otpService.generateOtp(userDto.getEmailId());
 //            userRepository.save(userBuild);
             System.out.println(user);
-            return UserResponseDto.builder()
-                    .userId(userBuild.getUserId())
-                    .emailId(userBuild.getEmailId())
-                    .fullName(userBuild.getFullName())
-                    .userName(userBuild.getUsername())
-                    .timestamp(userBuild.getTimestamp())
-                    .build();
+            return userBuild;
         }
         throw new BadRequestException("The Account is already exists");
     }
 
     @Override
     public User SignIn(UserSignInDto userSignInDto) {
-        User user = userRepository.getUserByUserName(userSignInDto.getUserName());
+        User user = userRepository.getUserByUserName(userSignInDto.getUsername());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         if(user != null){
@@ -119,5 +112,18 @@ public class UserServiceImpl implements UserService {
             }
         }
         throw new BadRequestException("The Account does not Exists.");
+    }
+
+    @Override
+    public UserResponseDto ValidateOTP(Integer otp, User user) {
+        String validateOtpResponse = otpService.validateOtp(user.getEmailId(), otp);
+        if(validateOtpResponse.equalsIgnoreCase("otp")){
+            userRepository.save(user);
+            return UserResponseDto.builder()
+                    .fullName(user.getFullName()).build();
+        } else if (validateOtpResponse.equalsIgnoreCase("fail")) {
+            throw new BadRequestException("The OTP is wrong");
+        }
+        return null;
     }
 }

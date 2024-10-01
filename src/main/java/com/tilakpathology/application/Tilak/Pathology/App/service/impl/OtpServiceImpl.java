@@ -1,9 +1,10 @@
-package com.tilakpathology.application.Tilak.Pathology.App.service;
+package com.tilakpathology.application.Tilak.Pathology.App.service.impl;
 
 import com.tilakpathology.application.Tilak.Pathology.App.config.mailservice.model.Mail;
 import com.tilakpathology.application.Tilak.Pathology.App.config.mailservice.service.MailService;
 import com.tilakpathology.application.Tilak.Pathology.App.dao.OtpRepository;
 import com.tilakpathology.application.Tilak.Pathology.App.model.Otp;
+import com.tilakpathology.application.Tilak.Pathology.App.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import static com.tilakpathology.application.Tilak.Pathology.App.constants.Regex
 import static com.tilakpathology.application.Tilak.Pathology.App.constants.RegexpConstants.OTP_MIN_VALUE;
 
 @Service
-public class OtpServiceImpl implements OtpService{
+public class OtpServiceImpl implements OtpService {
 
     @Autowired
     private OtpRepository otpRepository;
@@ -39,6 +40,22 @@ public class OtpServiceImpl implements OtpService{
         return otp;
     }
 
+    @Override
+    public String validateOtp(String email, Integer otp) {
+        List<Otp> dbOtp = otpRepository.findOtpByEmail(email);
+        Optional<Otp> otpRes = dbOtp.stream().filter(otp1 -> otp1.getEmail().equalsIgnoreCase(email))
+                .sorted(Comparator.comparing(Otp::getCreateDate).reversed())
+                .findFirst();
+        if(otpRes.isPresent()){
+            if(Objects.equals(otp, otpRes.get().getOTP())){
+                return "otp";
+            }else{
+                return "fail";
+            }
+        }
+        return  null;
+    }
+
     private void sendMailToUser(String userEmail, Integer otp){
         Mail mail = new Mail();
         mail.setMailFrom("rahulguptaharsh081218@gmail.com");
@@ -47,4 +64,6 @@ public class OtpServiceImpl implements OtpService{
         mail.setMailSubject("Your OTP for Account Creation");
         mailService.sendEmail(mail);
     }
+
+
 }

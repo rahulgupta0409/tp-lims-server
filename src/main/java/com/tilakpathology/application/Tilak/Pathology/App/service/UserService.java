@@ -10,7 +10,9 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserResponseDto SignUp(UserDto userDto);
+    User SignUp(UserDto userDto);
 
     User SignIn(UserSignInDto userSignInDto);
+
+    UserResponseDto ValidateOTP(Integer otp, User user);
 }
