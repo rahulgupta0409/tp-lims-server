@@ -19,7 +19,7 @@ public class UserResponseDto {
 
     private String emailId;
 
-    private String userName;
+    private String username;
 
     private String fullName;
 
