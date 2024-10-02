@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 //        }
 
 
-        if(user == null || userByEmail == null){
+        if(user == null){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = passwordEncoder.encode(userDto.getPassword());
             User userBuild = User.builder()
