@@ -97,4 +97,12 @@ public class PatientController {
         return new ResponseEntity<>(patientList, HttpStatus.OK);
     }
 
+    @PutMapping("/{patientId}/tests/{testId}")
+    public void updateTestValue(
+            @PathVariable String patientId,
+            @PathVariable String testId,
+            @RequestParam String value) {
+        patientService.updateTestForPatient(patientId, testId, value);
+    }
+
 }

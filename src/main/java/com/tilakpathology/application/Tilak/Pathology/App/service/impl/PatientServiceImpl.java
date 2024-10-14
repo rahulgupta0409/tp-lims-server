@@ -219,6 +219,31 @@ public class PatientServiceImpl implements PatientService {
         return patientList;
     }
 
+    @Override
+    public void updateTestForPatient(String patientId, String testId, String value) {
+        Patient patient = patientRepository.findPatientByPatientId(patientId);
+        if(patient != null){
+            for(int i=0; i< patient.getTests().size(); i++){
+                if(patient.getTests().get(i).getIsMajorLabTest()){
+                    for(int j=0; j<patient.getTests().get(i).getMinorLabTestList().size(); j++){
+                        if(patient.getTests().get(i).getMinorLabTestList().get(j).getTestId().equalsIgnoreCase(testId)){
+                            patient.getTests().get(i).getMinorLabTestList().get(j).setValue(value);
+                            //TODO: implementation of default value as per default-test-value collection
+                        }
+                    }
+                }else{
+                    if(patient.getTests().get(i).getTestId().equalsIgnoreCase(testId)){
+                        patient.getTests().get(i).setValue(value);
+                        //TODO: implementation of default value as per default-test-value collection
+                    }
+                }
+            }
+           patientRepository.updateTestForPatient(patient);
+        }
+    }
+
+
+
     private String convertToSearchItem(String str){
         String ans = "";
         for(int i=0; i<str.length() - 3; i++){

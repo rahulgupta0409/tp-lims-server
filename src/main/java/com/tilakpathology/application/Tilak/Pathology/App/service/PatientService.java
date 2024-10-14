@@ -17,5 +17,7 @@ public interface PatientService {
 
     List<Patient> searchPatients(String searchItem);
 
+    void updateTestForPatient(String patientId, String testId, String value);
+
 
 }
