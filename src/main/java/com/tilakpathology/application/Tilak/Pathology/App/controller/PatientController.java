@@ -97,7 +97,7 @@ public class PatientController {
         return new ResponseEntity<>(patientList, HttpStatus.OK);
     }
 
-    @PutMapping("/{patientId}/tests/{testId}")
+    @PutMapping("/updateTest/{patientId}/tests/{testId}")
     public void updateTestValue(
             @PathVariable String patientId,
             @PathVariable String testId,

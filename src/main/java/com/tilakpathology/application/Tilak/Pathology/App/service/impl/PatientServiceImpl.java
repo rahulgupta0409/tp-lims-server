@@ -6,6 +6,7 @@ import com.tilakpathology.application.Tilak.Pathology.App.dto.PatientDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.ReportProgressDto;
 import com.tilakpathology.application.Tilak.Pathology.App.dto.response.PatientResponseDto;
 import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.BadRequestException;
+import com.tilakpathology.application.Tilak.Pathology.App.exceptions.type.ResourceNotFoundException;
 import com.tilakpathology.application.Tilak.Pathology.App.model.*;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.Doctor;
 import com.tilakpathology.application.Tilak.Pathology.App.model.helpermodel.MinorTest;
@@ -224,7 +225,7 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = patientRepository.findPatientByPatientId(patientId);
         if(patient != null){
             for(int i=0; i< patient.getTests().size(); i++){
-                if(patient.getTests().get(i).getIsMajorLabTest()){
+                if(Boolean.TRUE.equals(patient.getTests().get(i).getIsMajorLabTest())){
                     for(int j=0; j<patient.getTests().get(i).getMinorLabTestList().size(); j++){
                         if(patient.getTests().get(i).getMinorLabTestList().get(j).getTestId().equalsIgnoreCase(testId)){
                             patient.getTests().get(i).getMinorLabTestList().get(j).setValue(value);
@@ -239,6 +240,8 @@ public class PatientServiceImpl implements PatientService {
                 }
             }
            patientRepository.updateTestForPatient(patient);
+        }else{
+            throw new ResourceNotFoundException("The patient with the patientId id not found in the database.");
         }
     }
 
